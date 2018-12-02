@@ -14,8 +14,8 @@ from flask import Flask
 # flask_app_var.register_blueprint(views_bp)
 
 
-def create_app():
+def create_app(config_file=None, blue_print_list=[]):
     app = Flask(__name__)
-    from . import auth
-    app.register_blueprint(auth.bp)
+    for bp in blue_print_list:
+        app.register_blueprint(bp)
     return app
