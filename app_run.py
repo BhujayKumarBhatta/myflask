@@ -4,5 +4,6 @@ import app1
 # bps = [views_bp,]
 from app1 import auth
 from app1.views import views_bp
-bp_list = [auth.bp,views_bp]
+from app1.authentication.tokenops import token_bp
+bp_list = [auth.bp,views_bp, token_bp]
 app = app1.create_app(blue_print_list=bp_list)
