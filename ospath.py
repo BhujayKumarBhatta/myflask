@@ -16,6 +16,7 @@ with open(newfile, 'w') as f:
    f.write('test')
 print("check newfile is created %s" % os.path.exists(newfile))
 print("check newfile is  a file  %s" % os.path.isfile(newfile))
+print("listing all files and dirs in directory %s " %  os.listdir(p))
 '''
 (venvp3flask) bhujay@DESKTOP-DTA1VEB:/mnt/c/mydev/myflask$ python ospath.py
  current working directory  is /mnt/c/mydev/myflask
