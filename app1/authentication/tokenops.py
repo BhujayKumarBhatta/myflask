@@ -1,4 +1,4 @@
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, current_app
 import jwt
 import datetime
 
@@ -7,11 +7,16 @@ token_bp = Blueprint('token_bp', __name__)
 __SECRET_kEY = 'Mysupersretkey'
 
 
+# don't try to access it here to avoid RuntimeError: Working outside of application context
+#publickey = current_app.config.get('public_key') 
+
 @token_bp.route('/token/GET')
 def get_token():
     '''
      curl -X GET  localhost:5000/token/GET
      '''
+    privkey = current_app.config.get('private_key')
+    
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=3600),
         'iat': datetime.datetime.utcnow(),
@@ -19,8 +24,8 @@ def get_token():
     try:
         auth_token = jwt.encode(
             payload,
-            __SECRET_kEY,
-            algorithm='HS256'
+            privkey,
+            algorithm='RS512'
         )
         return auth_token
     except Exception as e:
@@ -31,14 +36,15 @@ def verify_token():
     '''
     curl -X POST -d '{"auth_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDM4NDQ3NTAsInN1YiI6ImJodWpheSIsImlhdCI6MTU0Mzg0NDc0NX0.GjFWcz65I4ed0IGChU4zjjSpDV-2DXCryIrgNRLKZ0o"}'  -H "Content-Type: Application/json"  localhost:5000/token/verify
     '''
+    publickey = current_app.config.get('public_key') 
     if request.method == 'POST':
         if 'auth_token' in request.json:
             auth_token = request.json['auth_token']
     try:
         payload = jwt.decode(
             auth_token,
-            __SECRET_kEY,
-            algorithm=['HS256']
+            publickey,
+            algorithm=['RS512']
         )
         data_in_token = "decrypted token data is %s" % payload
         return data_in_token
