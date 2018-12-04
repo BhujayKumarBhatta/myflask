@@ -1,11 +1,9 @@
-from flask import request, Blueprint, jsonify, current_app
+from flask import request, Blueprint, jsonify, current_app,make_response
 import jwt
 import datetime
 
+
 token_bp = Blueprint('token_bp', __name__)
-
-__SECRET_kEY = 'Mysupersretkey'
-
 
 # don't try to access it here to avoid RuntimeError: Working outside of application context
 #publickey = current_app.config.get('public_key') 
@@ -20,14 +18,20 @@ def get_token():
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=3600),
         'iat': datetime.datetime.utcnow(),
-        'sub': 'bhujay' }
+        'sub': 'bhujay'
+         }
     try:
         auth_token = jwt.encode(
             payload,
             privkey,
-            algorithm='RS512'
+            algorithm='RS256'
         )
-        return auth_token
+        responseObject = {
+            'status': 'success',
+            'message': '',
+            'auth_token': auth_token.decode()}
+#         return auth_token
+        return make_response(jsonify(responseObject)), 201
     except Exception as e:
         return e
     
@@ -46,8 +50,12 @@ def verify_token():
             publickey,
             algorithm=['RS512']
         )
-        data_in_token = "decrypted token data is %s" % payload
-        return data_in_token
+        
+        print(payload.get('sub'))
+#         subject_in_token = "decrypted token data is %s" % payload.get('subject')
+#         name = subject_in_token.get('name')
+#         
+        return "Data in token is %s \nand subject in payload is %s \n" % (payload, payload.get('sub'))
     except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
