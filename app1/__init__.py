@@ -4,11 +4,11 @@ from flask import Flask
 
 # from app1.views import views_bp
 # flask_app_var.register_blueprint(views_bp)
-_HERE = os.path.dirname(__file__)
-_SETTINGS = os.path.join(_HERE, 'settings.ini')
-
-def create_app(config_file=None, blue_print_list=[]):
+def create_app(config_map_list=None, blue_print_list=[]):
     app = Flask(__name__)
+    for m in config_map_list:
+        app.config.update(m)
     for bp in blue_print_list:
         app.register_blueprint(bp)
+    
     return app

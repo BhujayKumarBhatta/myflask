@@ -49,15 +49,15 @@ def verify_token():
 #     except Exception as e:
 #         return e   
 
-'''
-Following are the claim attributes :
-iss: The issuer of the token
-sub: The subject of the token
-aud: The audience of the token
-qsh: query string hash
-exp: Token expiration time defined in Unix time
-nbf: “Not before” time that identifies the time before which the JWT must not be accepted for processing
-iat: “Issued at” time, in Unix time, at which the token was issued
-jti: JWT ID claim provides a unique identifier for the JWT
-
-'''
+# '''
+# Following are the claim attributes :
+# iss: The issuer of the token
+# sub: The subject of the token
+# aud: The audience of the token
+# qsh: query string hash
+# exp: Token expiration time defined in Unix time
+# nbf: “Not before” time that identifies the time before which the JWT must not be accepted for processing
+# iat: “Issued at” time, in Unix time, at which the token was issued
+# jti: JWT ID claim provides a unique identifier for the JWT
+# 
+# '''
