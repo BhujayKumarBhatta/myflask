@@ -7,6 +7,7 @@ _SETTINGS_FILE = os.path.join(_HERE, 'settings.ini')
 CONFS = konfig.Config(_SETTINGS_FILE)
 flask_default_setiings_map = CONFS.get_map('flask_default')
 token_settings_map = CONFS.get_map('token')
+db_settings_map = CONFS.get_map('db')
 
 if token_settings_map.get('private_key_file_location') == 'default':
     private_key_filename = os.path.expanduser('~/.ssh/id_rsa')
@@ -26,5 +27,6 @@ key_attr = {'private_key': private_key, 'public_key': public_key}
 token_settings_map.update(key_attr)
 
 prod_configs_from_file = [flask_default_setiings_map,
-                        token_settings_map,]
+                        token_settings_map,
+                        db_settings_map,]
 
