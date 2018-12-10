@@ -1,3 +1,5 @@
+write tests
+
 register user in db
 register role 
 asssign role to user
@@ -5,10 +7,14 @@ retrive role after authentication in sub
 
 handle authentication failure
 
+based on domain choose authentication backend as ldap or db 
+
 client for 
 	a. sending the auth info and getting token 
 	b. connecting to other micro services using the token
 
 other microservoce to have client for connecting to auth service to verify the token 
+
+force microservices to validate token before processing api request
 
 
