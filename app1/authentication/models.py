@@ -30,23 +30,23 @@ class User(db.Model):
     
 '''
 
-rom app_run import app
+from app_run import app
 app.app_context().push()
 from app1 import db
 from app1.authentication.models import User
 u1 = User(username='susan', email='susan@abc.com')
 db.session.add(u1)
-db.commit()
+db.session.commit()
 
 
-rom app_run import app
+from app_run import app
 app.app_context().push()
 from app1 import db
 from app1.authentication.models import User
+u1 = User.query.filter_by(username='susan').first()
 u1.set_password('mysecret')
 u1.check_password('mysecret')
-u1 = User.query.filter_by(username='susan').first()
-db.commit()
+db.session.commit()
 
 from app_run import app
 app.app_context().push()

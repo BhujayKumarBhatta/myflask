@@ -1,6 +1,9 @@
 import os
 import konfig
 
+
+   
+
 _HERE = os.path.dirname(__file__)
 _SETTINGS_FILE = os.path.join(_HERE, 'settings.ini')
 
@@ -30,3 +33,15 @@ prod_configs_from_file = [flask_default_setiings_map,
                         token_settings_map,
                         db_settings_map,]
 
+
+test_db_settings_map = {'DEBUG': True,
+                'SQLALCHEMY_DATABASE_URI': 'sqlite:////tmp/test_auth.db',
+                'SQLALCHEMY_TRACK_MODIFICATIONS': False}
+
+test_configs = [token_settings_map,
+            test_db_settings_map]
+
+
+
+
+    
