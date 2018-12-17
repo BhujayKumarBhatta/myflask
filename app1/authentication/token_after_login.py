@@ -110,13 +110,19 @@ def verify_token():
         if 'auth_token' in request.json:
             auth_token = request.json['auth_token']
             
-    payload = decrypt_n_verify_token(auth_token, publickey)
-        
-    print(payload.get('sub'))
+    payload = decrypt_n_verify_token(auth_token, publickey) 
+    responseObject = {
+                        'status': 'Verification Successful',
+                        'message': 'Token has been successfully decrypted',
+                        'payload': payload}
+            #         return auth_token
+    return make_response(jsonify(responseObject)), 201       
+#     print(payload.get('sub'))
+#     print(payload)
 #         subject_in_token = "decrypted token data is %s" % payload.get('subject')
-#         name = subject_in_token.get('name')
-#         
-    return "Data in token is %s \nand subject in payload is %s \n" % (payload, payload.get('sub'))
+#         name = subject_in_token.get('name')#         
+    #return "Data in token is %s \nand subject in payload is %s \n" % (payload, payload.get('sub'))
+    #return jsonify(payload)
     
 
 

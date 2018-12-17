@@ -59,7 +59,7 @@ class TestToken(BaseTestCase):
             self.assertTrue(data['status'] == 'User not registered')
             self.assertFalse('auth_token' in data)
             
-    def test_token_gen_success_for_registered_user(self):
+    def test_token_gen_n_verify_success_for_registered_user(self):
         u1 = User(username='susan', email='susan@abc.com')
         u1.set_password('mysecret')       
         self.assertTrue(u1.check_password('mysecret'))
@@ -77,6 +77,21 @@ class TestToken(BaseTestCase):
             #print(data['message'])
             self.assertTrue(data['status'] == 'success')
             self.assertTrue('auth_token' in data)
+            mytoken = data['auth_token']
+        with self.client:
+            response = self.client.post(
+                '/token/verify_token',
+                data=json.dumps(dict(
+                    auth_token=mytoken,
+                    )),
+                content_type='application/json')
+            #print('response is {}'.format(response))
+            data = json.loads(response.data.decode())
+            #print(data)
+            self.assertTrue(data['status'] == 'Verification Successful')
+            self.assertTrue('payload' in data)
+            self.assertTrue(data['payload'].get('sub').get('username') == 'susan')
+        
             
     def test_token_gen_fail_with_wrong_password(self):
         u1 = User(username='susan', email='susan@abc.com')

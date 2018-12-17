@@ -1,11 +1,11 @@
 write tests
+handle authentication failure
 
 register user in db
+password change 
 register role 
 asssign role to user
 retrive role after authentication in sub
-
-handle authentication failure
 
 based on domain choose authentication backend as ldap or db 
 
