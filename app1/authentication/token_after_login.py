@@ -11,15 +11,16 @@ token_login_bp = Blueprint('token_login_bp', __name__)
 
 
 def generate_encrypted_auth_token(payload, priv_key):
-    try:
+    try: 
+        #print("inside the func start")       
         auth_token = jwt.encode(
              payload,
              priv_key,
-             algorithm='RS256'
-        )
-        
-        return auth_token.decode()   
-                                
+             algorithm='RS512'
+        )  
+        #print("type of auth_token within the func is {}".format(type(auth_token)))
+        return auth_token  
+        #print("inside the func last line")                                
     except Exception as e:
                     return e
                 
@@ -48,19 +49,20 @@ def get_token():
         if 'username' in request.json and 'password' in request.json:
             username = request.json['username']
             password = request.json['password'] 
+            
             if username is None or password is None:
                 responseObject = {
-                        'status': 'Failed',
+                        'status': 'missing authentication info ',
                         'message': 'no authentication information provided',}
                 return jsonify(responseObject) 
                       
             user = User.query.filter_by(username=username).first()
             if user is None:
                 responseObject = {
-                        'status': 'Failed',
+                        'status': 'User not registered',
                         'message': 'user not found, not registered yet',}
                 return jsonify(responseObject )
-                
+               
             if user.check_password(password):
                 user_from_db = user.to_dict()
     
@@ -71,17 +73,27 @@ def get_token():
                     'iat': datetime.datetime.utcnow(),
                     'sub': user_from_db
                      }
-                auth_token = generate_encrypted_auth_token(payload, priv_key)
+#                 print(payload)
                 
+                try:
+                    auth_token = jwt.encode(
+                        payload,
+                        privkey,
+                        algorithm = 'RS512')
+                
+                except Exception as e:
+                    return e
+                #auth_token = generate_encrypted_auth_token(payload, priv_key)
+                #print(auth_token)
                 responseObject = {
                         'status': 'success',
                         'message': '',
-                        'auth_token': auth_token}
+                        'auth_token': auth_token.decode()}
             #         return auth_token
                 return make_response(jsonify(responseObject)), 201
             else:
                 responseObject = {
-                        'status': 'Failed',
+                        'status': 'Wrong Password',
                         'message': 'Password did not match',}
                 return jsonify(responseObject)
                 
