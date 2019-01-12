@@ -3,6 +3,7 @@ import unittest
 from flask_testing import TestCase
 import json
 import ms2app
+from auth import authclient
 
 from ms2app.APIroutes.firstapi import bp1
 
@@ -12,7 +13,23 @@ app = ms2app.create_app(blue_print_list=bp_list)
 
 class BaseTestCase(TestCase):
     def create_app(self):       
-        return app       
+        return app     
+    
+    def test_get_token(self):
+        response = authclient.get_token('susan', 'mysecret', 'http://localhost:5001' )
+        self.assertTrue(isinstance(response, str))                              
+#         data = json.loads(response.decode())
+#         print(data)
+#         self.assertTrue(data['status'] == 'success')
+#         self.assertTrue('auth_token' in data)
+#     
+    def test_verify_token(self):
+        token = authclient.get_token('susan', 'mysecret', 'http://localhost:5001' )
+        result = authclient.verify_token(token, 'http://localhost:5001' )
+        self.assertTrue(isinstance(result, dict))
+        
+
+        
   
     def test_first_api(self):
         with self.client:
