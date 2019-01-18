@@ -39,6 +39,20 @@ class BaseTestCase(TestCase):
             return_data = json.loads(response.data.decode())
             self.assertTrue(return_data['message'] == 'Catch me if you can')
             
+    def test_ep2(self):
+        response = authclient.get_token('susan', 'mysecret', 'http://localhost:5001' )
+        self.assertTrue(isinstance(response, str))         
+        with self.client:
+            response = self.client.post('/ep2', data=json.dumps(dict(
+                    auth_token=response,
+                    )),
+                content_type='application/json')
+            print(response.data.decode())            
+            #return_data = json.loads(response)
+            return_data = json.loads(response.data.decode())
+            self.assertTrue(return_data['message'] == 'Catch me if you can')
+            print('ep2 tested ok')
+                        
 
 if __name__ =='__main__':
     unittest.main()

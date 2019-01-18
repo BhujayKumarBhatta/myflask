@@ -1,6 +1,10 @@
+import flask
+from flask import request
 import requests
 import json
+import functools
 
+auth_url = 'http://localhost:5001'
 
 def get_token(username, password, auth_endpoint):
 #     print('get token function initaited')   
@@ -55,9 +59,46 @@ def deco2(f):
         role = token_verification_result['payload'].get('sub').get('role')
         if role != 'abc':
             return f
+
+def validate_request(f):
+  @functools.wraps(f)
+  def decorated_function(*args, **kws):
+    # Do something with your request here
+    fdata = flask.request.get_json()
+    if not fdata:
+      flask.abort(404)
+    if 'auth_token' in fdata:
+            auth_token = fdata['auth_token']
+            token_verification_result = verify_token(auth_token, auth_url)
+            print(token_verification_result)
+            if token_verification_result['status'] == 'Verification Successful' :
+#                 print(token_verification_result)
+#                 print(type(token_verification_result))               
+                username = token_verification_result['payload'].get('sub').get('username') 
+                role = token_verification_result['payload'].get('sub').get('role')
+                if role != 'abc':
+                    #do more stuff
+                    return f(*args, **kws)
+                #handle else for authentication errors
+            #handle {'message': 'Token has been successfully decrypted', 'payload': 'Signature expired. Please log in again.', 'status': 'Verification Successful'}
+  return decorated_function
+
+  
+def deco3(f):      
+    if request.method == 'POST':
+        if 'auth_token' in request.json:
+            auth_token = request.json['auth_token']
         
-    
-    
+    token_verification_result = verify_token(auth_token, auth_url)
+    '''
+    if toekn expired get fresh toekn
+    '''
+    if token_verification_result['status'] == 'Verification Successful' :
+        username = token_verification_result['payload'].get('sub').get('username') 
+        role = token_verification_result['payload'].get('sub').get('role')
+        if role != 'abc':
+            return f
+           
 
     
                
@@ -93,4 +134,6 @@ def token_auth_deco(username='susan', password='mysecret', auth_endpoint='http:/
             return result
         return wrapper_func
     return deco
-        
+
+
+
