@@ -111,9 +111,20 @@ def verify_token():
             auth_token = request.json['auth_token']
             
     payload = decrypt_n_verify_token(auth_token, publickey) 
+    
+    if payload == "Signature expired. Please log in again." :
+        status = "Signature expired"
+        message = "Signature expired. Please log in and get a fresh token and send it for reverify."
+    elif payload == "Invalid token. Please log in again.":
+        status = "Invalid token"
+        message = "Invalid token. obtain a valid token and send it for verifiaction"
+    else:
+        status = "Verification Successful"
+        message = "Token has been successfully decrypted"        
+        
     responseObject = {
-                        'status': 'Verification Successful',
-                        'message': 'Token has been successfully decrypted',
+                        'status': status,
+                        'message': message,
                         'payload': payload}
             #         return auth_token
     return make_response(jsonify(responseObject)), 201       
