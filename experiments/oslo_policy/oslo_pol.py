@@ -18,6 +18,9 @@ e.rules
 rls = e.rules
 r = rls.get('data-processing:clusters:get_all')
 
+ru = policy.Rules.load('"data-processing:job-types:get_all": ""')
+ru
+{'data-processing:job-types:get_all': <oslo_policy._checks.TrueCheck object at 0x7f0fd5054750>}
 
 
 '''
@@ -28,6 +31,9 @@ u'data-processing:clusters:get': <oslo_policy._checks.TrueCheck object at 0x7f0f
 u'data-processing:clusters:get_all': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063150>, u'data-processing:images:unregister': <oslo_policy._checks.TrueCheck object at 0x7f0fd50631d0>, u'data-processing:cluster-templates:modify': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063210>, u'data-processing:data-sources:modify': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063190>, u'data-processing:job-binary-internals:get': <oslo_policy._checks.TrueCheck object at 0x7f0fd5054e50>, u'data-processing:data-sources:delete': <oslo_policy._checks.TrueCheck object at 0x7f0fd5054b50>, u'data-processing:jobs:delete': <oslo_policy._checks.TrueCheck object at 0x7f0fd50632d0>, u'data-processing:node-group-templates:create': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063350>, u'data-processing:plugins:convert_config': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063390>, u'data-processing:job-executions:get_all': <oslo_policy._checks.TrueCheck object at 0x7f0fd50633d0>, u'data-processing:jobs:execute': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063410>, u'data-processing:cluster-templates:delete': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063450>, u'data-processing:job-binaries:get_data': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063490>, u'default': <oslo_policy._checks.TrueCheck object at 0x7f0fd50634d0>, u'data-processing:data-sources:get_all': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063510>, u'data-processing:cluster-templates:get': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063550>, u'data-processing:images:remove_tags': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063590>, u'data-processing:node-group-templates:get_all': <oslo_policy._checks.TrueCheck object at 0x7f0fd50635d0>, u'data-processing:data-sources:get': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063610>, u'context_is_admin': <oslo_policy._checks.RoleCheck object at 0x7f0fd5063310>, u'data-processing:jobs:modify': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063650>, u'data-processing:data-sources:register': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063250>, u'data-processing:job-binary-internals:modify': <oslo_policy._checks.TrueCheck object at 0x7f0fd5063690>, u'data-processing:jobs:create': <oslo_policy._checks.TrueCheck object at 0x7f0fd50636d0>}
 
 <oslo_policy._checks.TrueCheck object at 0x7f0fd5063150>
+class TrueCheck(BaseCheck)
+ |  A policy check that always returns ``True`` (allow).
+
 
 we have to undersatand how load_policy converting the policy.json to such object and what we can do
 with that object
