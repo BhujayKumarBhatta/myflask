@@ -19,7 +19,7 @@ imagesize==1.1.0
 itsdangerous==1.1.0
 Jinja2==2.10
 konfig==1.1
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 marshmallow==2.13.1
 marshmallow-jsonapi==0.20.5
